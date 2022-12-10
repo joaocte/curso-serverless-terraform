@@ -1,0 +1,20 @@
+service: api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  environment:
+    DYNAMODB_USERS: ${ssm:${self:custom.stage}-dynamodb-users-table} #-dynamodb-users-table veio do arquivo ssm-paramter-name-table.tf onde dertermino o nome do parametro.
+
+functions:
+  register:
+    handler: register/handler.register
+    events:
+      - httpApi:
+          path: /users
+          method: post
+custom:
+  stage: ${opt:stage, self:provider.stage}
