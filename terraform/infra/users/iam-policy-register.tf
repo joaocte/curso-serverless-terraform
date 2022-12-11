@@ -21,7 +21,5 @@ resource "aws_iam_policy" "register_policy" {
         Resource = "*"
       },
     ]
-
   })
-
 }
