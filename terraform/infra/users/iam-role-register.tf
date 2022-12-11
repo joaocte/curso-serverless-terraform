@@ -13,6 +13,15 @@ resource "aws_iam_role" "register_iam_role" {
           Service = "lambda.amazonaws.com"
         }
       },
+      {
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+      }
     ]
   })
 }
