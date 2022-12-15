@@ -6,8 +6,6 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: us-east-1
-  environment:
-    DYNAMODB_USERS: ${ssm:${self:custom.stage}-dynamodb-users-table} #-dynamodb-users-table veio do arquivo ssm-paramter-name-table.tf onde dertermino o nome do parametro.
 
 functions:
   register:
@@ -17,5 +15,19 @@ functions:
       - httpApi:
           path: /users
           method: post
+    environment:
+      DYNAMODB_USERS: ${ssm:${self:custom.stage}-dynamodb-users-table} #-dynamodb-users-table veio do arquivo ssm-paramter-name-table.tf onde dertermino o nome do parametro.
+
+  login:
+    role:  ${ssm:${self:custom.stage}-login-iam-role}
+    handler: login/handler.login
+    events:
+      - httpApi:
+          path: /login
+          method: post
+    environment:
+      DYNAMODB_USERS: ${ssm:${self:custom.stage}-dynamodb-users-table} #-dynamodb-users-table veio do arquivo ssm-paramter-name-table.tf onde dertermino o nome do parametro.
+      JWT_SECRET: ${ssm:${self:custom.stage}-jwt-secret}
+      EMAIL_GSI: ${ssm:${self:custom.stage}-email-gsi}
 custom:
   stage: ${opt:stage, self:provider.stage}
