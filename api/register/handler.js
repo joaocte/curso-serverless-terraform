@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 const bcrypt = require('bcryptjs')
-const { v4: uuidv4 } = require('uuid')
+const { v4: uuid4 } = require('uuid')
 
 AWS.config.update({
   region: process.env.AWS_Region
@@ -15,7 +15,7 @@ module.exports.register = async event => {
   await documentClient.put({
     TableName: process.env.DYNAMODB_USERS,
     Item: {
-      id: uuidv4(),
+      id: uuid4(),
       name: body.name,
       email: body.email,
       password: bcrypt.hashSync(body.password, 10)
