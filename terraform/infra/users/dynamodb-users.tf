@@ -20,3 +20,17 @@ resource "aws_dynamodb_table" "users" {
     read_capacity =  "${var.read_capacity}"  
 }
 
+resource "aws_dynamodb_table_item" "admin" {
+  table_name = "${aws_dynamodb_table.users.name}"
+  hash_key   = "${aws_dynamodb_table.users.hash_key}"
+
+  item = <<ITEM
+{
+  "id": {"S": "${var.admin_id}"},
+  "email": {"S": "${var.admin_email}"},
+  "password": {"S": "${var.admin_password}"},
+  "role": {"S": "ADMIN"},
+  "name": {"S": "${var.admin_name}"}
+}
+ITEM
+}
