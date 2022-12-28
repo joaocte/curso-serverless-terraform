@@ -19,7 +19,7 @@ module.exports.listen = async (event) => {
         SNS.publish({
           TopicArn: process.env.SNS_NOTIFICATIONS_TOPIC,
           Message: `Reserva efetuada: O usuário: ${reserva.user.name} (${reserva.user.email}) agendou um horário em: ${moment(reserva.date).format('LLLL')}` 
-        }).promise
+        }).promise()
       )
     }
   }
